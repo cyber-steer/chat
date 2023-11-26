@@ -40,6 +40,21 @@ public class ChatRoomDao  extends ChatdbDao{
 			e.printStackTrace();
 		}
 		return dtos;
-		
+	}
+	public String selectName(int num){
+		String sql = "SELECT * FROM chatRooms where chatRoomNumber="+num+";";
+		try (
+			Connection con = getConnection();
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+		){
+			if(rs.next()) {
+				return rs.getString("chatRoomNumber");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

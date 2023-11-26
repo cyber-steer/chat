@@ -36,10 +36,28 @@ public class FriendsDao  extends ChatdbDao{
 				FriendsDto dto = new FriendsDto();
 				dto.setId(id);
 				dto.setfriendID(rs.getString("friendID"));
+				dtos.add(dto);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dtos;
+	}
+	public boolean check(String id, String friendID) {
+		String sql = "select * from friends where id='"+id+"' and friendID='"+friendID+"';";
+
+		try (
+			Connection con = getConnection();
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+		){
+			if(rs.next()) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+		
 	}
 }

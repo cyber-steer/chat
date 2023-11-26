@@ -13,7 +13,7 @@ public class UserSelectCommand implements Command{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 로그인 구현
+		request.setCharacterEncoding("utf-8");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		

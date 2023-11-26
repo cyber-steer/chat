@@ -80,7 +80,7 @@
                     <td class="right-td"><input type="text" id="name" name="name"></td>
                 </tr>
                 <tr>
-                    <td class="left-td"><label for="mail">Email</label></td>
+                    <td class="left-td"><label for="email">Email</label></td>
                     <td class="right-td"><input type="email" id="mail" name="mail"></td>
                 </tr>
                 <tr>

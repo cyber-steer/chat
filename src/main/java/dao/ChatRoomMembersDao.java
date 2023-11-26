@@ -23,21 +23,24 @@ public class ChatRoomMembersDao  extends ChatdbDao{
 			e.printStackTrace();
 		}
 	}
-	public ArrayList<Integer> select(String id) {
+	public int select(String id, String friendID) {
 		ArrayList<Integer> dtos = new ArrayList<Integer>();
-		String query = "select * from chatRoomMembers where id='"+id+"';";
+		String query = "SELECT a.chatRoomNumber"
+				+ "FROM chatRoomMembers a"
+				+ "JOIN chatRoomMembers b ON a.chatRoomNumber = b.chatRoomNumber"
+				+ "WHERE a.id = '"+id+"' AND b.id = '"+friendID+"'"
+				+ "GROUP BY a.chatRoomNumber\r\n"
+				+ "HAVING COUNT(DISTINCT a.id) = 1 AND COUNT(DISTINCT b.id) = 1;";
 		try (
 				Connection con = getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 		){
-			while(rs.next()) {
-				dtos.add(rs.getInt("chatRoomNumber"));
-			}
+			if(rs.next()) return rs.getInt("number.chatRoomNumber");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dtos;
+		return -1;
 	}
 }

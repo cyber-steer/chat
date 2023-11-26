@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import command.Command;
-import command.FirendInsertCommand;
+import command.FriendInsertCommand;
 import command.FriendSelectCommand;
 import command.RoomInsertCommand;
 import command.RoomSelectCommand;
@@ -65,7 +65,7 @@ public class Controller extends HttpServlet {
 				viewPage="WEB-INF/view/index.jsp";
 				break;
 			case "friendInsert":
-				command = new FirendInsertCommand();
+				command = new FriendInsertCommand();
 				command.execute(request, response);
 				viewPage = "home.do";
 				break;
@@ -77,7 +77,12 @@ public class Controller extends HttpServlet {
 				command.execute(request, response);
 				viewPage = "home.do";
 				break;
-				
+			case "select":
+				command = new RoomSelectCommand();
+				command.execute(request, response);
+				int roomNumber = (int) request.getAttribute("roomNumber");
+				viewPage = "home.do?roomNumber='"+roomNumber+"'";
+				break;
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);
 		rd.forward(request, response);
