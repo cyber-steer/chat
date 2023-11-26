@@ -24,6 +24,7 @@ public class UserSelectCommand implements Command{
 		if(!name.equals("")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("name", name);
+			session.setAttribute("id", id);
 		}
 	}
 

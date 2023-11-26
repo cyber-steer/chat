@@ -21,6 +21,7 @@ CREATE TABLE chatHistory (
     chatRoomNumber INT NOT NULL,
     id VARCHAR(20) NOT NULL,
     message TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id) REFERENCES users(id)
 );
 CREATE TABLE chatRoomMembers (
@@ -28,6 +29,12 @@ CREATE TABLE chatRoomMembers (
     chatRoomNumber INT NOT NULL,
     FOREIGN KEY (id) REFERENCES users(id),
     FOREIGN KEY (chatRoomNumber) REFERENCES chatRooms(chatRoomNumber)
+);
+CREATE TABLE friends(
+    id VARCHAR(20) NOT NULL,
+    friendID VARCHAR(20) NOT NULL,
+    FOREIGN KEY (id) REFERENCES users(id),
+    FOREIGN KEY (friendID) REFERENCES users(id)
 );
 SELECT * FROM ChatHistory;
 INSERT INTO USERs (ID, PASSWORD, name) VALUES("admin", "1111", "관리자");

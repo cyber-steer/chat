@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import command.Command;
+import command.FirendInsertCommand;
+import command.FriendSelectCommand;
+import command.RoomInsertCommand;
+import command.RoomSelectCommand;
 import command.UserInsertCommand;
 import command.UserSelectCommand;
 
@@ -21,10 +25,18 @@ public class Controller extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		String uri = request.getRequestURI();
 		String com = uri.substring(uri.lastIndexOf("/")+1, uri.lastIndexOf(".do"));
+		Command command;
 
 		switch(com.trim()) {
 			case "index":
 				viewPage="WEB-INF/view/index.jsp";
+				break;
+			case "home":
+				command = new FriendSelectCommand();
+				command.execute(request, response);
+				command = new RoomSelectCommand();
+				command.execute(request, response);
+				viewPage="WEB-INF/view/home.jsp";
 				break;
 			case "login":
 				viewPage="WEB-INF/view/login.jsp";
@@ -33,23 +45,37 @@ public class Controller extends HttpServlet {
 				viewPage="WEB-INF/view/signup.jsp";
 				break;
 			case "userInsert":
-				Command userInsert = new UserInsertCommand();
-				userInsert.execute(request, response);
+				command = new UserInsertCommand();
+				command.execute(request, response);
 				viewPage="WEB-INF/view/login.jsp";
 				break;
 			case "userSelect":
-				Command userSelect = new UserSelectCommand();
-				userSelect.execute(request, response); 
+				command = new UserSelectCommand();
+				command.execute(request, response); 
 				// 로그인 성공 체크
 				if(request.getSession().getAttribute("name") != null) {
-					viewPage="home.do";				
+					viewPage="home.do";
 				}
 				else {
 					viewPage="WEB-INF/view/login.jsp";
 				}
 				break;
-			case "home":
-				viewPage="WEB-INF/view/home.jsp";
+			case "logout":
+				request.getSession().invalidate();
+				viewPage="WEB-INF/view/index.jsp";
+				break;
+			case "friendInsert":
+				command = new FirendInsertCommand();
+				command.execute(request, response);
+				viewPage = "home.do";
+				break;
+			case "roomCreate":
+				viewPage = "WEB-INF/view/roomCreate.jsp";
+				break;
+			case "roomInsert":
+				command = new RoomInsertCommand();
+				command.execute(request, response);
+				viewPage = "home.do";
 				break;
 				
 		}

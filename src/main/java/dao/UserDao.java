@@ -5,21 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
 import dto.UserDto;
 
-public class UserDao {
+public class UserDao extends ChatdbDao{
 
-	private Connection getConnection()  throws Exception {
-		Context initCtx = new InitialContext();
-		Context envCtx = (Context) initCtx.lookup("java:comp/env");
-		DataSource ds =(DataSource) envCtx.lookup("jdbc/chatdb");
-		Connection con = ds.getConnection();
-		return con;
-	}
 	public void insert(UserDto dto) {
 		String sql = "INSERT INTO users (id, pw, name) VALUES(?, ?, ?);";
 		try (
@@ -51,18 +40,25 @@ public class UserDao {
 	}
 	public String selectName(String id, String pw) {
 		String sql = "SELECT * FROM users WHERE id = '"+id+"' AND pw='"+pw+"';";
+		return selectNameQuery(sql);
+	}
+	public String selectName(String id) {
+		String sql = "SELECT name FROM users WHERE id = '"+id+"';";
+		return selectNameQuery(sql);
+	}
+	private String selectNameQuery(String sql) {
 		try (
-			Connection con = getConnection();
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-		){
-			if(rs.next()) return rs.getString("name"); 
-			else return "";
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
+				Connection con = getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+			){
+				if(rs.next()) return rs.getString("name"); 
+				else return "";
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "";
 	}
 	
 }
